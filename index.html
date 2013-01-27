@@ -1,0 +1,82 @@
+<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Fat Me</title>
+   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/css/bootstrap.min.css">
+   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.3/underscore-min.js" type="text/javascript"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js" type="text/javascript"></script>
+   <script type="text/javascript">
+     var time_done = false;
+ 
+     function update_fat(url) {
+       $.getJSON(url, function(data) {
+         if (data['latest_age'] > 0) {
+             data['latest'] = '' + data['latest'] + ' (' + data['latest_age'] + ' ago)'
+         }
+         var template = _.template($('#competitor_template').html(), data);      
+         $('.container').append(template);
+
+         if (!time_done) {
+             $('.time').css('width', '' + data['time_percent'] + '%');
+             time_done=true;
+         }
+       });
+     }
+     update_fat('http://fatme.herokuapp.com/api/weight/latest/')
+     update_fat('http://setae.herokuapp.com/api/weight/latest/')
+   </script>
+</head>
+<body>
+<script type="text/template" id="competitor_template">
+  <div class="row">
+    <h2><%= name %></h2>
+    <div class="span2">
+      <img src="<%= picture %>" alt="<%= name %>" />
+    </div> 
+    <div class="span10">
+      <div class="progress">
+        <div class="bar" style="width: <%= percent_done %>%"><%= percent_done %>%</div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Start</th>
+            <th>Latest</th>
+            <th>Goal</th>
+            <th>kg</th>
+            <th>%</th>
+          <tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= start %></td>
+            <td><%= latest %></td>
+            <td><%= goal %></td>
+            <td><%= diff %>/<%= goal_diff %></td>
+            <td><%= percent_done %></td>
+          </tr>
+            <td>total <%= total_days %> days</td>
+            <td><%= latest_days_left %> days left</td>
+            <td><%= goal_date %></td>
+            <td colspan="2">today <%= days_left %> days left</td>
+          <tr>
+          </tr>
+        </tbody>        
+      </table>
+    </div>
+  </div>
+</script>
+<div class="container">
+  <h1>The Ultimate Fattle 2013 <small>'til death</small></h1>
+  <div class="row">
+    <h2>Time left</h2>
+    <div class="span12">
+      <div class="progress">
+        <div class="bar time" style="width: 100%"></div>
+      </div>
+    </div>
+  </div>
+</html>
+
