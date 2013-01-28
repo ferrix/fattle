@@ -13,13 +13,14 @@
      function update_fat(url) {
        $.getJSON(url, function(data) {
          if (data['latest_age'] > 0) {
-             data['latest'] = '' + data['latest'] + ' (' + data['latest_age'] + ' ago)'
+             data['latest'] = '' + data['latest'] + ' (' + data['latest_age'] + ' days ago)'
          }
          var template = _.template($('#competitor_template').html(), data);      
          $('.container').append(template);
 
          if (!time_done) {
-             $('.time').css('width', '' + data['time_percent'] + '%');
+             var timetemplate = _.template($('#time_template').html(), data);
+             $('.time').html(timetemplate);
              time_done=true;
          }
        });
@@ -36,8 +37,9 @@
       <img src="<%= picture %>" alt="<%= name %>" />
     </div> 
     <div class="span10">
+      <span class="badge" style="padding: 3px; float: left; width: 35px; text-align: center;"><%= percent_done %>%</span>
       <div class="progress">
-        <div class="bar" style="width: <%= percent_done %>%"><%= percent_done %>%</div>
+        <div class="bar" style="width: <%= percent_done %>%"></div>
       </div>
       <table class="table">
         <thead>
@@ -68,15 +70,18 @@
     </div>
   </div>
 </script>
-<div class="container">
-  <h1>The Ultimate Fattle 2013 <small>'til death</small></h1>
-  <div class="row">
+<script type="text/template" id="time_template">
     <h2>Time left</h2>
     <div class="span12">
+      <span class="badge" style="padding: 3px; float: left; width: 45px; text-align: center;"><%= percent_days %>%</span>
       <div class="progress">
-        <div class="bar time" style="width: 100%"></div>
+        <div class="bar" style="float: right; width: <%= percent_days %>%"></div>
       </div>
     </div>
+</script>
+<div class="container">
+  <h1>The Ultimate Fattle 2013 <small>'til death</small></h1>
+  <div class="row time">
   </div>
 </html>
 
