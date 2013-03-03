@@ -24,10 +24,13 @@
       var time_done = false;
  
       function update_fat(url) {
-        $.getJSON(url, function(data) {
+        var apiurl = url + 'api/weight/latest/';
+
+        $.getJSON(apiurl, function(data) {
           if (data['latest_age'] > 0) {
-              data['latest'] = '' + data['latest'] + ' (' + data['latest_age'] + ' days ago)'
+              data['latest'] = '' + data['latest'] + ' (' + data['latest_age'] + ' days ago)';
           }
+          data['url'] = url;
           var template = _.template($('#competitor_template').html(), data);      
           $('.container').append(template);
  
@@ -38,14 +41,14 @@
           }
         });
       }
-      update_fat('http://fatme.herokuapp.com/api/weight/latest/')
-      update_fat('http://setae.herokuapp.com/api/weight/latest/')
+      update_fat('http://fatme.herokuapp.com/');
+      update_fat('http://setae.herokuapp.com/');
     </script>
   </head>
 <body>
 <script type="text/template" id="competitor_template">
   <div class="row">
-    <h2><%= name %></h2>
+    <h2><a href="<%= url %>"><%= name %></a> <small>(click name for statistics)</small></h2>
     <div class="span2">
       <img src="<%= picture %>" alt="<%= name %>" />
     </div> 
