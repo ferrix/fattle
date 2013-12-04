@@ -1,4 +1,3 @@
-<html lang="en">
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,8 +34,8 @@
           $('.container').append(template);
  
           if (!time_done) {
-              var timetemplate = _.template($('#time_template').html(), data);
-              $('.time').html(timetemplate);
+              var time_template = _.template($('#time_template').html(), data);
+              $('.time').html(time_template);
               time_done=true;
           }
         });
@@ -99,5 +98,7 @@
   <h1>The Ultimate Fattle 2013 <small>'til death</small></h1>
   <div class="row time">
   </div>
+</div>
+</body>
 </html>
 
